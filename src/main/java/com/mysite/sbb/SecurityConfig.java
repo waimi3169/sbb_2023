@@ -13,11 +13,27 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .formLogin(
+                        formLogin -> formLogin
+                                // GET
+                                // 시큐리티에게 우리가 만든 로그인 페이지 url을 알려준다.
+                                // 만약에 하지 않으면 기본 로그인 페이지 url은 /login 이다.
+                                .loginPage("/user/login")
+                                .defaultSuccessUrl("/")
+                )
+                .logout(
+                        logout -> logout
+                                .logoutUrl("/user/logout")
+                                .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)
+                );
+
         return http.build();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

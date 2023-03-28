@@ -19,4 +19,5 @@ public class MainController {
         // 브라우저 주소가 아래로 바뀐다.
         return "redirect:/question/list";
     }
+
 }
