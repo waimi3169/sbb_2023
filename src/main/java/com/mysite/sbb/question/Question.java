@@ -11,7 +11,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 // question 테이블이 생김
 @Getter
@@ -29,8 +31,8 @@ public class Question {
     @Column(columnDefinition = "TEXT") // TEXT
     private String content;
 
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;// DATETIME
+    private LocalDateTime createDate; // DATETIME
+    private LocalDateTime modifyDate;
 
     // OneToMany 자바세상에서의 편의를 위해서 필드 생성
     // 이 녀석은 실제 DB 테이블에 칼럼이 생성되지 않는다.
@@ -46,8 +48,15 @@ public class Question {
     @ManyToOne
     private SiteUser author;
 
+    @ManyToMany
+    private Set<SiteUser> voters = new LinkedHashSet<>();
+
     public void addAnswer(Answer a) {
         a.setQuestion(this);
         answerList.add(a);
+    }
+
+    public void addVoter(SiteUser voter) {
+        voters.add(voter);
     }
 }
